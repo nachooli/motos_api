@@ -141,8 +141,11 @@ class Moto
 
     /**
      * Indica si la moto es de edición limitada.
+     * Solo se indica al crearse la entidad de moto, después de esto no se puede cambiar, (no se le indica el grupo de update).
      *
-     * Solo se indica al crearse la entidad de moto, después de esto no se puede cambiar, (no se le indica el grupo de update)
+     * IMPORTANTE: Las propiedades tipadas deben inicializarse para evitar errores de acceso antes de inicialización.
+     * Como edicionLimitada es inmutable y no forma parte del grupo de update, debe inicializarse con un valor
+     * por defecto en la entidad (indicado en el constructor de abajo), manteniendo la validación NotNull únicamente en el grupo de create.
      */
     #[ORM\Column]
     #[Assert\NotNull(groups: ['motorcycle:create'])]
@@ -156,6 +159,7 @@ class Moto
         $this->extras = [];
         $this->id = null;
         $this->peso = null;
+        $this->edicionLimitada = false;
     }
 
     public function getId(): ?int
