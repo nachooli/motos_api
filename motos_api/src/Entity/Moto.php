@@ -31,10 +31,12 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Get(),
         new Put(
+            normalizationContext: ['groups' => ['moto:read']],
             denormalizationContext: ['groups' => ['moto:update']],
             validationContext: ['groups' => ['moto:update']]
         ),
         new Patch(
+            normalizationContext: ['groups' => ['moto:read']],
             denormalizationContext: ['groups' => ['moto:update']],
             validationContext: ['groups' => ['moto:update']]
         ),
@@ -54,7 +56,7 @@ class Moto
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups(['moto:read'])]
-    private ?int $id;
+    private ?int $id = null;
 
     /**
      * Modelo de la moto.
@@ -111,7 +113,7 @@ class Moto
         ]
     )]
     #[Groups(['moto:read', 'moto:create', 'moto:update'])]
-    private array $extras;
+    private array $extras = [];
 
     /**
      * Peso de la moto (opcional).
@@ -119,7 +121,7 @@ class Moto
     #[ORM\Column(nullable: true)]
     #[Assert\Positive]
     #[Groups(['moto:read', 'moto:create', 'moto:update'])]
-    private ?int $peso;
+    private ?int $peso = null;
 
     /**
      * Fecha de creación de la moto.
@@ -149,17 +151,7 @@ class Moto
     #[ORM\Column(nullable: true)]
     #[Assert\NotNull(groups: ['moto:create'])]
     #[Groups(['moto:read', 'moto:create'])]
-    private ?bool $edicionLimitada;
-
-    /**
-     * Constructor para inicializaciones
-     */
-    public function __construct() {
-        $this->extras = [];
-        $this->id = null;
-        $this->peso = null;
-        $this->edicionLimitada = null;
-    }
+    private ?bool $edicionLimitada = null;
 
     public function getId(): ?int
     {
